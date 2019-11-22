@@ -1,22 +1,24 @@
 import numpy as np
+# Creating two random 3X3 matrices
 A=np.random.randint(10,size=(3,3))
-A
 B=np.random.randint(10,size=(3,3))
-B
-A+B
-A*B
-A@B
-A
-A.T
-np.linalg.det(A)
-np.linalg.inv(A)
-np.round(np.linalg.inv(A)@A)
+
+#Basic operations
+A+B             # Add
+A*B             # Element Wise Multiplication (Hadamard Product)
+A@B             # Matrix Product
+A.T             # Transpose
+np.linalg.det(A)# Determinant
+np.linalg.inv(A)# Inverse
+
+# Comparing product of matrix and its inverse with Identity Matrix
+np.round(np.linalg.inv(A)@A) 
 np.eye(3)
+
 np.round(np.linalg.inv(A)@np.linalg.inv(B))==np.round(np.linalg.inv(B@A))
 np.linalg.matrix_rank(A)
 b=np.random.randint(10,size=(3,1))
-b
-A
+
 import time
 tic=time.time()
 c=np.linalg.inv(A)@b
@@ -28,6 +30,7 @@ c=np.linalg.solve(A,b)
 toc=time.time()
 print(c)
 print("Gaussian Elimination: " + str((toc-tic)*1000) + "ms")
+#Eigenvalue Decomposition
 eigenvalues, eigenvectors = np.linalg.eig(A)
 eigenvalues*np.eye(3)
 eigenvectors
