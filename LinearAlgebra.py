@@ -34,7 +34,7 @@ print("Gaussian Elimination: " + str((toc-tic)*1000) + "ms")
 eigenvalues, eigenvectors = np.linalg.eig(A)
 eigenvalues*np.eye(3)
 eigenvectors
-np.trace(A)
+np.trace(A) # Sum of all diagonal values
 np.round(sum(eigenvalues))
 np.round(A@eigenvectors)==np.round(eigenvectors@(eigenvalues*np.eye(3)))
 np.round(A@eigenvectors)
