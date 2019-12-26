@@ -1,4 +1,4 @@
-'Ola'*3
+'Ola'*4
 'Ola'+'Rocks'
 'Ola'.upper()
 len('Ola')
