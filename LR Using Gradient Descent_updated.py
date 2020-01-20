@@ -3,9 +3,9 @@ import matplotlib.pyplot as plt
 
 #Generating Data
 features, outputs, samples = 1,1,100  
-X=np.random.rand(samples,features)
-Wrand=np.random.rand(features,outputs)*100
-Y= 4 + X@Wrand + np.random.randn(samples,outputs)
+X=np.random.rand(samples,features)                  #Input Design Matrix
+Wrand=np.random.rand(features,outputs)*100          #Random Coefficents generated for data gemeration
+Y= 4 + X@Wrand + np.random.randn(samples,outputs)   #Output Matrix
 
 #Plotting Actual Data
 plt.scatter(X,Y)
