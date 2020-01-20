@@ -9,9 +9,9 @@ Y= 4 + X@Wrand + np.random.randn(samples,outputs)
 
 #Plotting Actual Data
 plt.scatter(X,Y)
-Wopt=(np.linalg.solve(X.T@X,X.T@Y))       # Using Normal Equation without bias
+Wopt=(np.linalg.solve(X.T@X,X.T@Y))         # Using Normal Equation without bias
 X_= np.hstack((np.ones((samples,1)),X))
-Wopt_=(np.linalg.solve(X_.T@X_,X_.T@Y))   # Using Normal Equation with bias
+Wopt_=(np.linalg.solve(X_.T@X_,X_.T@Y))     # Using Normal Equation with bias
 Hopt=X@Wopt                                 # Prediction without bias
 Hopt_=X_@Wopt_                              # Prediction with bias
 plt.scatter(X,Hopt)
@@ -59,7 +59,7 @@ costfunc(X,Y,W,b,samples)
 from sklearn.linear_model import LinearRegression
 
 model=LinearRegression()
-model.fit(X,Y)          #Learning optimum pararmeters 
+model.fit(X,Y)              #Learning optimum pararmeters 
 model.intercept_            #Bias b  - constant intercept terms for each output
 model.coef_                 #Weight W - coefficients of features
-model.score(X,Y)        #Final Mean Square Error after learning
+model.score(X,Y)            #Final Mean Square Error after learning
