@@ -99,3 +99,6 @@ from yellowbrick.cluster import SilhouetteVisualizer
 visualizer=SilhouetteVisualizer(kmeans,colors='yellowbrick')
 visualizer.fit(X)
 visualizer.show()
+
+
+# DB and Dubb scores can also be used as metrics
