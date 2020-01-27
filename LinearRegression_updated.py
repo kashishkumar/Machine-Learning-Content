@@ -36,11 +36,11 @@ b=np.zeros((outputs,))                      # Initializing bias for learning
 alpha=0.01                                  # Learning rate as a hyperparameter
 
 # Defining the mean square error cost function (regression task)
-def costfunc(X,Y,W,b,m):
+def costfunc(X,Y,W,b,samples):
     return np.sum((X@W + b - Y)**2)/samples
 
 # Defining the derivative of cost function
-def dcostfunc(X,Y,W,b,m):
+def dcostfunc(X,Y,W,b,samples):
     return (X.T@(X@W+b-Y))*(2/samples) , (np.sum(X@W+b-Y))*(2/samples)
 
 #Testing Cost Function 
@@ -77,3 +77,44 @@ model.fit(X,Y)              # Learning optimum pararmeters
 model.intercept_            # Bias b  - constant intercept terms for each output
 model.coef_                 # Weight W - coefficients of features
 model.score(X,Y)            # Final Mean Square Error after learning
+
+
+# Defining cost function with regularisation 
+# Defining the mean square error cost function (regression task) with regularisation (L2)
+def costfunc_l2(X,Y,W,b,samples,lambda_):
+    return np.sum((X@W + b - Y)**2)/samples + lambda_*np.linalg.norm(W)**2 
+    # return (X@W + b - Y).T@(X@W + b - Y)/samples +lambda_*W.T@W
+
+# Defining the derivative of cost function with regularisation (L2)
+def dcostfunc_l2(X,Y,W,b,samples,lambda_):
+    return (X.T@(X@W+b-Y))*(2/samples) + 2*lambda_*W , (np.sum(X@W+b-Y))*(2/samples)
+
+#Using Stochastic Gradient Descent
+def minimise(X,Y,W,b,lambda_,alpha):                              # samples can be replaced with Y.shape[0]            
+    costarr[i]=costfunc_l2(X,Y,W,b,Y.shape[0],lambda_)      # Calculating cost for plotting
+    dcostW, dcostb=dcostfunc_l2(X,Y,W,b,Y.shape[0],lambda_) # Calculating gradient for learning
+    W=W-alpha*dcostW                                # Weight Update
+    b=b-alpha*dcostb                                # Bias Update
+    return W,b
+
+lambda_=
+batch_size=10
+
+batches = 
+
+for i in range(epochs):
+    for batch in batches:
+        W,b=minimise(batch_X,batch_Y,W,b)
+
+
+#Hyperparameter optimisation
+def batch(X,Y,batch_size):
+    #Add code
+    return batches
+
+
+def optimise(X,Y,epochs,batch_size,alpha,lambda_):
+    batches=batch(X,Y,batch_size)
+    for i in range(epochs):
+        for batch in batches:
+            W,b=minimise(batch_X,batch_Y,W,b,alpha)
