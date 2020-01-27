@@ -19,10 +19,14 @@ test_images = test_images / 255.0
 model = tf.keras.models.Sequential([tf.keras.layers.Flatten(), 
                                       tf.keras.layers.Dense(128, activation=tf.nn.relu), 
                                       tf.keras.layers.Dense(10, activation=tf.nn.softmax)])
+
+
 #Model Compilation - Optimizer, loss, metrics
 model.compile(optimizer = 'adam',
               loss = 'sparse_categorical_crossentropy',
               metrics=['accuracy'])
+
+model.summary()
 
 #Training the Model
 model.fit(train_images,train_labels,epochs=10)

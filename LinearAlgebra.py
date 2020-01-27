@@ -30,6 +30,7 @@ c=np.linalg.solve(A,b)
 toc=time.time()
 print(c)
 print("Gaussian Elimination: " + str((toc-tic)*1000) + "ms")
+
 #Eigenvalue Decomposition
 eigenvalues, eigenvectors = np.linalg.eig(A)
 eigenvalues*np.eye(3)
