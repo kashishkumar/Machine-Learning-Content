@@ -19,7 +19,7 @@ plt.scatter(X,Y)
 
 # Solving in one shot using normal equation
 Wopt=(np.linalg.solve(X.T@X,X.T@Y))         # Using Normal Equation without bias
-X_= np.hstack((np.ones((samples,1)),X))
+X_= np.hstack((np.ones((samples,1)),X))     #  
 Wopt_=(np.linalg.solve(X_.T@X_,X_.T@Y))     # Using Normal Equation with bias
 Hopt=X@Wopt                                 # Prediction without bias
 Hopt_=X_@Wopt_                              # Prediction with bias
@@ -91,16 +91,16 @@ def dcostfunc_l2(X,Y,W,b,samples,lambda_):
 
 #Using Stochastic Gradient Descent
 def minimise(X,Y,W,b,lambda_,alpha):                              # samples can be replaced with Y.shape[0]            
-    costarr[i]=costfunc_l2(X,Y,W,b,Y.shape[0],lambda_)      # Calculating cost for plotting
-    dcostW, dcostb=dcostfunc_l2(X,Y,W,b,Y.shape[0],lambda_) # Calculating gradient for learning
-    W=W-alpha*dcostW                                # Weight Update
-    b=b-alpha*dcostb                                # Bias Update
+    costarr[i]=costfunc_l2(X,Y,W,b,Y.shape[0],lambda_)            # Calculating cost for plotting
+    dcostW, dcostb=dcostfunc_l2(X,Y,W,b,Y.shape[0],lambda_)       # Calculating gradient for learning
+    W=W-alpha*dcostW                                              # Weight Update
+    b=b-alpha*dcostb                                              # Bias Update
     return W,b
 
-lambda_=
+lambda_= 1
 batch_size=10
 
-batches = 
+batches = [] #Add code
 
 for i in range(epochs):
     for batch in batches:
@@ -112,9 +112,28 @@ def batch(X,Y,batch_size):
     #Add code
     return batches
 
-
 def optimise(X,Y,epochs,batch_size,alpha,lambda_):
     batches=batch(X,Y,batch_size)
     for i in range(epochs):
         for batch in batches:
-            W,b=minimise(batch_X,batch_Y,W,b,alpha)
+            return minimise(batch_X,batch_Y,W,b,alpha)
+
+hyperparameters={"alpha_list":[],"lambda_list":[],"batch_size_list":[]}
+
+def grid search(X,Y,epochs,hyperparameters):
+    cost_list=[]
+    parameter_list=[]
+    hyperparameter_list=[]
+    for batch_size in hyperparameters["batch_size_list"]:
+        for alpha in hyperparameters["alpha_list"]:
+            for lambda_ in hyperparameters["lambda_list"] :   
+                W,b=optimise(X,Y,epochs,batch_size,alpha,lambda_)
+                cost = costfunc_l2(X,Y,W,b,Y.shape[0],lambda_)
+                if cost < cost_list[-1]:
+                    cost_list.append(cost)
+                    hyperparameter_list.append([batch_size,alpha,lambda_])
+                    parameter_list.append([W,b])
+
+    return cost_list[-1], hyperparameter_list[-1], parameter_list[-1]
+
+
