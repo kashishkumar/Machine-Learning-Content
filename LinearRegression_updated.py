@@ -134,6 +134,6 @@ def grid search(X,Y,epochs,hyperparameters):
                     hyperparameter_list.append([batch_size,alpha,lambda_])
                     parameter_list.append([W,b])
 
-    return cost_list[-1], hyperparameter_list[-1], parameter_list[-1]
+    return cost_list[-1], hyperparameter_list[-1], parameter_list[-1] #Optimum cost
 
-
+# Rather than storing in a list, variable can be used instead
