@@ -12,14 +12,14 @@ import matplotlib.pyplot as plt
 features, outputs, samples = 1,1,100  
 X=np.random.rand(samples,features)                  # Input Design Matrix
 Wrand=np.random.rand(features,outputs)*100          # Random Coefficents generated for data generation
-Y= 4 + X@Wrand + np.random.randn(samples,outputs)   # Output Matrix
+Y= 4 + X@Wrand + np.random.randn(samples,outputs)   # Output Matrix with added noise 
 
 # Plotting Actual Data
 plt.scatter(X,Y)
 
 # Solving in one shot using normal equation
 Wopt=(np.linalg.solve(X.T@X,X.T@Y))         # Using Normal Equation without bias
-X_= np.hstack((np.ones((samples,1)),X))     #  
+X_= np.hstack((np.ones((samples,1)),X))      
 Wopt_=(np.linalg.solve(X_.T@X_,X_.T@Y))     # Using Normal Equation with bias
 Hopt=X@Wopt                                 # Prediction without bias
 Hopt_=X_@Wopt_                              # Prediction with bias
@@ -90,7 +90,7 @@ def dcostfunc_l2(X,Y,W,b,samples,lambda_):
     return (X.T@(X@W+b-Y))*(2/samples) + 2*lambda_*W , (np.sum(X@W+b-Y))*(2/samples)
 
 #Using Stochastic Gradient Descent
-def minimise(X,Y,W,b,lambda_,alpha):                              # samples can be replaced with Y.shape[0]            
+def minimise(X,Y,W,b,lambda_,alpha):         # samples can be replaced with Y.shape[0]            
     costarr[i]=costfunc_l2(X,Y,W,b,Y.shape[0],lambda_)            # Calculating cost for plotting
     dcostW, dcostb=dcostfunc_l2(X,Y,W,b,Y.shape[0],lambda_)       # Calculating gradient for learning
     W=W-alpha*dcostW                                              # Weight Update
@@ -100,24 +100,36 @@ def minimise(X,Y,W,b,lambda_,alpha):                              # samples can 
 lambda_= 1
 batch_size=10
 
+def batch(X,Y,batch_size):
+    batches = [] 
+    data = np.hstack((X, Y)) 
+    np.random.shuffle(data) 
+    n_batches = data.shape[0] // batch_size 
+    for i in range(n_batches + 1): 
+        batch = data[i * batch_size:(i + 1)*batch_size, :] 
+        X_mini = batch[:, :-1] 
+        Y_mini = batch[:, -1].reshape((-1, 1)) 
+        batches.append((X_mini, Y_mini)) 
+    if data.shape[0] % batch_size != 0: 
+        batch = data[i * batch_size:data.shape[0]] 
+        X_mini = mini_batch[:, :-1] 
+        Y_mini = mini_batch[:, -1].reshape((-1, 1)) 
+        batches.append((X_mini, Y_mini)) 
+    return batches
+
 batches = [] #Add code
 
 for i in range(epochs):
     for batch in batches:
         W,b=minimise(batch_X,batch_Y,W,b)
-
-
-#Hyperparameter optimisation
-def batch(X,Y,batch_size):
-    #Add code
-    return batches
-
+   
 def optimise(X,Y,epochs,batch_size,alpha,lambda_):
     batches=batch(X,Y,batch_size)
     for i in range(epochs):
         for batch in batches:
             return minimise(batch_X,batch_Y,W,b,alpha)
 
+#Hyperparameter optimisation
 hyperparameters={"alpha_list":[],"lambda_list":[],"batch_size_list":[]}
 
 def grid search(X,Y,epochs,hyperparameters):
@@ -136,4 +148,4 @@ def grid search(X,Y,epochs,hyperparameters):
 
     return cost_list[-1], hyperparameter_list[-1], parameter_list[-1] #Optimum cost
 
-# Rather than storing in a list, variable can be used instead
+# Rather than storing in a list, temporary variable can be used instead
