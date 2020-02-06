@@ -90,7 +90,7 @@ def dcostfunc_l2(X,Y,W,b,samples,lambda_):
     return (X.T@(X@W+b-Y))*(2/samples) + 2*lambda_*W , (np.sum(X@W+b-Y))*(2/samples)
 
 #Using Stochastic Gradient Descent
-def minimise(X,Y,W,b,lambda_,alpha):         # samples can be replaced with Y.shape[0]            
+def minimise(X,Y,W,b,lambda_,alpha):                              # samples can be replaced with Y.shape[0]            
     costarr[i]=costfunc_l2(X,Y,W,b,Y.shape[0],lambda_)            # Calculating cost for plotting
     dcostW, dcostb=dcostfunc_l2(X,Y,W,b,Y.shape[0],lambda_)       # Calculating gradient for learning
     W=W-alpha*dcostW                                              # Weight Update
@@ -98,8 +98,9 @@ def minimise(X,Y,W,b,lambda_,alpha):         # samples can be replaced with Y.sh
     return W,b
 
 lambda_= 1
-batch_size=10
 
+#Creating batches
+batch_size=10
 def batch(X,Y,batch_size):
     batches = [] 
     data = np.hstack((X, Y)) 
@@ -117,7 +118,7 @@ def batch(X,Y,batch_size):
         batches.append((X_mini, Y_mini)) 
     return batches
 
-batches = [] #Add code
+batches = batch(X,Y,batch_size) 
 
 for i in range(epochs):
     for batch in batches:
@@ -130,22 +131,17 @@ def optimise(X,Y,epochs,batch_size,alpha,lambda_):
             return minimise(batch_X,batch_Y,W,b,alpha)
 
 #Hyperparameter optimisation
-hyperparameters={"alpha_list":[],"lambda_list":[],"batch_size_list":[]}
-
+hyperparameters={"alpha_list":[0.1,0.01,0.001],"lambda_list":[1,10,20],"batch_size_list":[32,64,128]}
 def grid search(X,Y,epochs,hyperparameters):
-    cost_list=[]
-    parameter_list=[]
-    hyperparameter_list=[]
+    cost_optim = 0
     for batch_size in hyperparameters["batch_size_list"]:
         for alpha in hyperparameters["alpha_list"]:
             for lambda_ in hyperparameters["lambda_list"] :   
                 W,b=optimise(X,Y,epochs,batch_size,alpha,lambda_)
                 cost = costfunc_l2(X,Y,W,b,Y.shape[0],lambda_)
-                if cost < cost_list[-1]:
-                    cost_list.append(cost)
-                    hyperparameter_list.append([batch_size,alpha,lambda_])
-                    parameter_list.append([W,b])
+                if cost < cost_optim:
+                    cost_optim=cost
+                    hyperparameters=[batch_size,alpha,lambda_]
+                    parameters=[W,b])
+    return cost_optim, hyperparameters, parameters                              #Optimum cost
 
-    return cost_list[-1], hyperparameter_list[-1], parameter_list[-1] #Optimum cost
-
-# Rather than storing in a list, temporary variable can be used instead
