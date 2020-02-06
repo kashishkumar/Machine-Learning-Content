@@ -1,5 +1,6 @@
 import tensorflow as tf
 from tensorflow import keras
+import cv2
 
 (X_train, Y_train), (X_test, Y_test) = tf.keras.datasets.fashion_mnist.load_data()
 
@@ -58,7 +59,11 @@ def train_gan(gan, dataset, batch_size, codings_size, n_epochs=50):
 gan = learn_gan(X_train,epochs=2)    
 
 #Add code to save images 
-def save_images(gan):
-    return None
+def save_images(gan,n_images=100,codings_size=100):
+    generator, discriminator = gan.layers
+    for i in range(n_images):
+        noise = tf.random.normal(shape=[1, codings_size])
+        generated_images = generator(noise)[0].numpy()*255
+        cv2.imwrite('genimage_num_'+str(i)+'.jpg',generated_images)
 
 save_images(gan) 
