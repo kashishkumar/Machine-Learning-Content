@@ -4,10 +4,8 @@ from tensorflow import keras
 (X_train, Y_train), (X_test, Y_test) = tf.keras.datasets.fashion_mnist.load_data()
 
 X_train = X_train.astype('float32') / 255
-X_test = X_test.astype('float32') / 255
 
-
-def GAN():
+def GAN(codings_size):
     generator = keras.models.Sequential([
     keras.layers.Dense(100, activation="selu", input_shape=[codings_size]),
     keras.layers.Dense(150, activation="selu"),
@@ -26,19 +24,17 @@ def GAN():
     return gan
 
 
-def learn_gan(X_train):
-    gan = GAN()
+def learn_gan(X_train,epochs=10,batch_size=32,codings_size = 30):
+    gan = GAN(codings_size)
     generator, discriminator = gan.layers
     discriminator.compile(loss="binary_crossentropy", optimizer="rmsprop")
     discriminator.trainable = False
     gan.compile(loss="binary_crossentropy", optimizer="rmsprop")
-    codings_size = 30
     batch_size = 32
     dataset = tf.data.Dataset.from_tensor_slices(X_train).shuffle(1000)
     dataset = dataset.batch(batch_size, drop_remainder=True).prefetch(1)
-    train_gan(gan, dataset, batch_size, codings_size)
-
-
+    gan = train_gan(gan, dataset, batch_size, codings_size,epochs)
+    return gan
 
 def train_gan(gan, dataset, batch_size, codings_size, n_epochs=50):
     generator, discriminator = gan.layers
@@ -57,48 +53,12 @@ def train_gan(gan, dataset, batch_size, codings_size, n_epochs=50):
             y2 = tf.constant([[1.]] * batch_size)
             discriminator.trainable = False
             gan.train_on_batch(noise, y2)
-        return gan    
+    return gan    
 
-#DCGAN
-def DCGAN(codings_size):
-    generator = keras.models.Sequential([
-    keras.layers.Dense(7 * 7 * 128, input_shape=[codings_size]),
-    keras.layers.Reshape([7, 7, 128]),
-    keras.layers.BatchNormalization(),
-    keras.layers.Conv2DTranspose(64, kernel_size=5, strides=2, padding="same",
-    activation="selu"),
-    keras.layers.BatchNormalization(),
-    keras.layers.Conv2DTranspose(1, kernel_size=5, strides=2, padding="same",
-    activation="tanh")
-    ])
+gan = learn_gan(X_train,epochs=2)    
 
-    discriminator = keras.models.Sequential([
-    keras.layers.Conv2D(64, kernel_size=5, strides=2, padding="same",
-    activation=keras.layers.LeakyReLU(0.2),
-    input_shape=[28, 28, 1]),
-    keras.layers.Dropout(0.4),
-    keras.layers.Conv2D(128, kernel_size=5, strides=2, padding="same",
-    activation=keras.layers.LeakyReLU(0.2)),
-    keras.layers.Dropout(0.4),
-    keras.layers.Flatten(),
-    keras.layers.Dense(1, activation="sigmoid")
-    ])
+#Add code to save images 
+def save_images(gan):
+    return None
 
-    gan = keras.models.Sequential([generator, discriminator])
-    return gan
-
-def learn_dcgan(X_train, epochs=10, batch_size=32):
-    codings_size = 100
-    gan = DCGAN(codings_size)
-    generator, discriminator = gan.layers
-    discriminator.compile(loss="binary_crossentropy", optimizer="rmsprop")
-    discriminator.trainable = False
-    gan.compile(loss="binary_crossentropy", optimizer="rmsprop")
-    batch_size = batch_size
-    dataset = tf.data.Dataset.from_tensor_slices(X_train).shuffle(1000)
-    dataset = dataset.batch(batch_size, drop_remainder=True).prefetch(1)
-    gan = train_gan(gan, dataset, batch_size, codings_size, epochs)
-    return gan
-
-
-learn_dcgan(X_train,2)    
+save_images(gan) 

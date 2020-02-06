@@ -52,8 +52,7 @@ def DCGAN(codings_size):
     return gan
 
 # Complete
-def learn_dcgan(X_train, epochs=10, batch_size=32):
-    codings_size = 100
+def learn_dcgan(X_train, epochs=10, batch_size=32,codings_size = 100):
     gan = DCGAN(codings_size)
     generator, discriminator = gan.layers
     discriminator.compile(loss="binary_crossentropy", optimizer="rmsprop")
@@ -66,9 +65,10 @@ def learn_dcgan(X_train, epochs=10, batch_size=32):
     return gan
 
 
-gan = learn_dcgan(X_train,2)    
+gan = learn_dcgan(X_train,epochs=2)    
 
+#Add code to save images 
 def save_images(gan):
+    return None
 
-
-save_images()    
+save_images(gan)    
