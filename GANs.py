@@ -59,7 +59,7 @@ def train_gan(gan, dataset, batch_size, codings_size, n_epochs=50):
 gan = learn_gan(X_train,epochs=2)    
 
 #Add code to save images 
-def save_images(gan,n_images=100,codings_size=100):
+def save_images(gan,n_images=100,codings_size=30):
     generator, discriminator = gan.layers
     for i in range(n_images):
         noise = tf.random.normal(shape=[1, codings_size])
