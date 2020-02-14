@@ -3,14 +3,17 @@ import numpy as np
 import tensorflow as tf
 from tensorflow import keras
 import cv2
-
+import matplotlib.pyplot as plt
 
 """
-
+Make it fast and be able to run in memory
+Connect GPU
+Define right architecture
+Run for large number of epochs
 """
 
 #path="/home/test/Desktop/Projects/GANs - Bollywood/IMFDB_final/**/**/*.jpg"
-data_dir="/home/test/Desktop/Projects/GANs - Bollywood/IMFDB_final"
+data_dir="/home/test/Desktop/Projects/Machine-Learning-Content/GANs - Bollywood"
 #configfiles = glob.glob(path,recursive=True)
 
 image_generator = tf.keras.preprocessing.image.ImageDataGenerator(rescale=1./255)
