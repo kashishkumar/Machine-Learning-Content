@@ -16,8 +16,11 @@ class DerivedClassName(BaseClassName):
 	
 
 
+# Magic Methods
+def __add__(self, other):
+	pass 
 
- 
+
 
 
 
