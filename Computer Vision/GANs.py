@@ -1,6 +1,7 @@
 import tensorflow as tf
 from tensorflow import keras
 import cv2
+import numpy as np 
 
 (X_train, Y_train), (X_test, Y_test) = tf.keras.datasets.fashion_mnist.load_data()
 
